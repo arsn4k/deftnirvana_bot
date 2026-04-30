@@ -6,7 +6,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 
-TOKEN = "8749307543:AAGQoh4KO3gluso9Dm8pX_EkOK_f6y2ePNM"
+TOKEN = os.environ.get("BOT_TOKEN", "")
 
 STATE_FILE = "state.json"
 PHOTOS_DIR = "photos"

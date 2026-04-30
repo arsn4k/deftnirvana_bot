@@ -16,7 +16,7 @@ BANDS = {
     "nirvana":  {"emoji": "💀", "name": "Nirvana"},
 }
 
-# ---------- Стан ----------
+#Стан
 
 def load_state():
     if os.path.exists(STATE_FILE):
@@ -28,7 +28,7 @@ def save_state(state):
     with open(STATE_FILE, "w", encoding="utf-8") as f:
         json.dump(state, f, indent=2, ensure_ascii=False)
 
-# ---------- Фото ----------
+#Фото
 
 def get_all_photos(band: str) -> list:
     folder = os.path.join(PHOTOS_DIR, band)
@@ -57,7 +57,7 @@ def get_next_photo(band: str, state: dict) -> str | None:
     state[band]["used"].append(chosen)
     return chosen
 
-# ---------- Хендлери ----------
+# Хендлери
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
@@ -152,11 +152,13 @@ async def send_stats(reply_fn):
         lines.append(f"{info['emoji']} *{info['name']}*: {used}/{total} показано")
     await reply_fn("\n".join(lines), parse_mode="Markdown")
 
-
-if __name__ == "__main__":
-    print("Бот запущено! Натисни Ctrl+C щоб зупинити.")
+def main():
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start",  start))
     app.add_handler(CommandHandler("stats",  cmd_stats))
     app.add_handler(CallbackQueryHandler(button_handler))
+    print("✅ Бот запущено! Натисни Ctrl+C щоб зупинити.")
     app.run_polling(drop_pending_updates=True)
+
+if __name__ == "__main__":
+    main()

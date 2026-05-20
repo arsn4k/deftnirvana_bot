@@ -7,7 +7,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandle
 import logging
 from telegram.error import NetworkError, TimedOut
 
-TOKEN = os.environ.get("BOT_TOKEN", "")
+TOKEN = "8749307543:AAGQoh4KO3gluso9Dm8pX_EkOK_f6y2ePNM"
 
 STATE_FILE = "state.json"
 PHOTOS_DIR = "photos"

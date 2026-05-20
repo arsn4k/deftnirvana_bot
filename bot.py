@@ -4,7 +4,8 @@ import random
 from datetime import datetime
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
-
+import logging
+from telegram.error import NetworkError, TimedOut
 
 TOKEN = os.environ.get("BOT_TOKEN", "")
 
@@ -214,11 +215,24 @@ async def send_band_photo(message, band: str, state: dict):
     with open(photo_path, "rb") as f:
         await message.reply_photo(photo=f, caption=caption, parse_mode="Markdown")
 
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.WARNING
+)
+
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
+    if isinstance(context.error, (NetworkError, TimedOut)):
+        # Мережеві помилки — ігноруємо, бот сам відновиться
+        return
+    # Інші помилки — логуємо
+    logging.error("Помилка:", exc_info=context.error)
+
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("stats", cmd_stats))
     app.add_handler(CallbackQueryHandler(button_handler))
+    app.add_error_handler(error_handler)  # ← додай це
     print("✅ Бот запущено! Натисни Ctrl+C щоб зупинити.")
     app.run_polling(drop_pending_updates=True)
 

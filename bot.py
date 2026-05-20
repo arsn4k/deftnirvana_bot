@@ -7,7 +7,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandle
 import logging
 from telegram.error import NetworkError, TimedOut
 
-TOKEN = "8749307543:AAGQoh4KO3gluso9Dm8pX_EkOK_f6y2ePNM"
+TOKEN = os.environ.get("BOT_TOKEN", "")
 
 STATE_FILE = "state.json"
 PHOTOS_DIR = "photos"
@@ -207,14 +207,12 @@ async def send_band_photo(message, band: str, state: dict):
     used_count  = len(state[band]["used_photos"])
     total_count = len(get_all_photos(band))
 
-    caption = (
-        f"{info['emoji']} *{info['name']}*\n"
-        f"📸 {used_count}/{total_count}\n\n"
-        f"_{text}_"
-    )
+    caption = f"{info['emoji']} *{info['name']}* — 📸 {used_count}/{total_count}"
 
     with open(photo_path, "rb") as f:
         await message.reply_photo(photo=f, caption=caption, parse_mode="Markdown")
+
+    await message.reply_text(text)
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",

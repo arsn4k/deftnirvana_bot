@@ -12,6 +12,7 @@ TOKEN = os.environ.get("BOT_TOKEN", "")
 STATE_FILE = "state.json"
 PHOTOS_DIR = "photos"
 
+#text samples for each band, you can add more variations if you want
 BANDS = {
     "deftones": {
         "emoji": "🎸",

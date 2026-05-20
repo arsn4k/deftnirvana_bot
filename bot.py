@@ -212,7 +212,7 @@ async def send_band_photo(message, band: str, state: dict):
     with open(photo_path, "rb") as f:
         await message.reply_photo(photo=f, caption=caption, parse_mode="Markdown")
 
-    await message.reply_text(text)
+    await message.reply_text(f'"{text}"')
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
